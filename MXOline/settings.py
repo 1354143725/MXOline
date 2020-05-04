@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.users.apps.UsersConfig',
     'apps.courses.apps.CoursesConfig',
+    'crispy_forms',
+    'xadmin.apps.XAdminConfig',
 ]
 
 MIDDLEWARE = [
