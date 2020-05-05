@@ -1,4 +1,3 @@
-
 import xadmin
 from apps.courses.models import Course
 # 不用继承admin.ModelAdmin，
@@ -7,6 +6,7 @@ class CourseAdmin(object):
     list_display = ["id", "name", "desc","learn_times", "degree"]
     # 搜索字段
     search_fields = ["name", "desc"]
+    #过滤搜索
     list_filter = ["id", "name", "desc","learn_times", "degree"]
 
 
