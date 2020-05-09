@@ -34,4 +34,4 @@ class OrgView(View):
         p = Paginator(all_orgs, per_page=10, request=request)  # 每页显示多少个per_page
         orgs = p.page(page)
         return render(request, 'org-list.html',
-                      {'all_orgs':orgs,'org_nums':org_nums,'all_citys':all_citys})
+                      {'city_id':city_id, 'all_orgs':orgs,'org_nums':org_nums,'all_citys':all_citys, 'category':category})
