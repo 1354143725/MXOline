@@ -5,8 +5,8 @@ import xadmin
 # from apps.users import views
 from django.views.generic import TemplateView
 from apps.users.views import LoginView
-from apps.courses.views import CourseView
-from apps.organization.views import OrgView
+# from apps.courses.views import CourseView
+# from apps.organization.views import OrgView
 from django.conf.urls import url,include
 from django.views.static import serve
 from MXOline.settings import MEDIA_ROOT
@@ -21,9 +21,10 @@ urlpatterns = [
     # path('orglist/', OrgView.as_view(), name='orglist'),
     # 配置上传文件的访问的url
     url(r'^media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
-    path('courselist/', CourseView.as_view(), name='course-list'),
+    # path('courselist/', CourseView.as_view(), name='course-list'),
     # 授课机构相关操作
     url(r'^org/', include(('apps.organization.urls', 'organization'), namespace='org')),
-
+    # 课程相关页面
+    url(r'^course/', include(('apps.courses.urls', 'courses'), namespace='course')),
 
 ]

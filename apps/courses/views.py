@@ -5,7 +5,7 @@ from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
 
 
-class CourseView(View):
+class CourseListView(View):
     def get(self, request, *args, **kwargs):
         """
         展示公开课列表页
@@ -14,13 +14,17 @@ class CourseView(View):
         :param kwargs:
         :return:
         """
-        all_course=Course.objects.all()
+        """获取课程列表信息"""
+        all_courses = Course.objects.order_by("-add_time")
+        # 对课程机构进行分页
         try:
             page = request.GET.get('page', 1)
         except PageNotAnInteger:
             page = 1
 
-        p = Paginator(all_course, per_page=3, request=request)  # 每页显示多少个per_page
-        course = p.page(page)
+        p = Paginator(all_courses, per_page=3, request=request)  # 每页显示多少个per_page
+        courses = p.page(page)
 
-        return render(request,'course-list.html',{'all_course':course})
+        return render(request, 'course-list.html',
+                      {"all_courses": courses,
+                       })

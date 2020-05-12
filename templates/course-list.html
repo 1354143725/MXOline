@@ -26,7 +26,7 @@
                     <div id="inWindow">
                         <div class="tab_cont " id="content">
                             <div class="group_list">
-                                {% for course in all_course.object_list %}
+                                {% for course in all_courses.object_list %}
                                     <div class="box">
                                         <a href="course-detail.html">
                                             <img width="280" height="350" class="scrollLoading"
@@ -53,16 +53,16 @@
                             </div>
                             <div class="pageturn">
                                 <ul class="pagelist">
-                                    {% if all_course.has_previous %}
+                                    {% if all_courses.has_previous %}
                                         <li class="long">
-                                            <a href="?{{ all_course.previous_page_number.querystring }}" class="page">
+                                            <a href="?{{ all_courses.previous_page_number.querystring }}" class="page">
                                                 上一页
                                             </a>
                                         </li>
                                     {% endif %}
-                                    {% for page in all_course.pages %}
+                                    {% for page in all_courses.pages %}
                                         {% if page %}
-                                            {% ifequal page all_course.number %}
+                                            {% ifequal page all_courses.number %}
                                                 <li class="active">
                                                     <a href="?{{ page.querystring }}">{{ page }}</a>
                                                 </li>
@@ -75,9 +75,9 @@
                                             <li class="none">...</li>
                                         {% endif %}
                                     {% endfor %}
-                                    {% if all_course.has_next %}
+                                    {% if all_courses.has_next %}
                                         <li class="long">
-                                            <a href="?{{ all_course.next_page_number.querystring }}" class="page">
+                                            <a href="?{{ all_courses.next_page_number.querystring }}" class="page">
                                                 下一页
                                             </a>
                                         </li>
@@ -91,7 +91,7 @@
                 <div class="right layout">
                     <div class="head">热门课程推荐</div>
                     <div class="group_recommend">
-                        {% for cour in all_course.object_list %}
+                        {% for cour in all_courses.object_list %}
                             {% ifequal cour.degree 'gj' %}
                                 <dl>
                                     <dt>
