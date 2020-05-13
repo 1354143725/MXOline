@@ -18,9 +18,9 @@
                 <div class="left layout">
                     <div class="head">
                         <ul class="tab_header">
-                            <li class="active"><a href="?sort=">最新 </a></li>
-                            <li><a href="?sort=hot">最热门</a></li>
-                            <li><a href="?sort=students">参与人数</a></li>
+                            <li class="{% if sort == ''%}active{% endif %}"><a href="?sort=">最新 </a></li>
+                            <li class="{% if sort == 'hot'%}active{% endif %}"><a href="?sort=hot">最热门</a></li>
+                            <li class="{% if sort == 'students'%}active{% endif %}"><a href="?sort=students">参与人数</a></li>
                         </ul>
                     </div>
                     <div id="inWindow">
@@ -40,7 +40,7 @@
                                             <span class="fr">学习人数：{{ course.students }}&nbsp;&nbsp;</span>
                                         </div>
                                         <div class="bottom">
-                                            <a href="course-detail.html"><span class="fl">{{ course.desc }}</span></a>
+                                            <a href="course-detail.html"><span class="fl">{{ course.course_org.name }}</span></a>
                                             <span class="star fr  notlogin
                                         " data-favid="15">
                                         {{ course.fav_nums }}
@@ -91,8 +91,8 @@
                 <div class="right layout">
                     <div class="head">热门课程推荐</div>
                     <div class="group_recommend">
-                        {% for cour in all_courses.object_list %}
-                            {% ifequal cour.degree 'gj' %}
+                        {% for cour in hot_orgs %}
+
                                 <dl>
                                     <dt>
                                         <a target="_blank" href="">
@@ -105,7 +105,7 @@
                                         <span class="fl">难度：<i class="key">{{ cour.degree }}</i></span>
                                     </dd>
                                 </dl>
-                            {% endifequal %}
+
                         {% endfor %}
 
 
