@@ -27,6 +27,9 @@ class Course(BaseModel):
 
     def __str__(self):
         return self.name
+    def lesson_nums(self):
+        """统计章节数"""
+        return self.lesson_set.all().count()
 
 
 class Lesson(BaseModel):
@@ -40,6 +43,9 @@ class Lesson(BaseModel):
         verbose_name_plural = verbose_name
     def __str__(self):
         return self.name
+
+
+
 
 
 
