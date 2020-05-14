@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'MXOline.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',#数据库
-        'NAME': 'mxoline', # 数据库名字
+        'NAME': 'mxoline1', # 数据库名字
         'USER':'root', #数据库登录用户名
         'PASSWORD':'root',#数据库登录密码
         'HOST':'localhost',#数据库所在主机
