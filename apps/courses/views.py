@@ -3,6 +3,8 @@ from django.views.generic import View
 from apps.courses.models import *
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 from apps.operations.models import UserFavorite
+
+
 # Create your views here.
 
 
@@ -37,12 +39,14 @@ class CourseListView(View):
 
         return render(request, 'course-list.html',
                       {"all_courses": courses,
-                      "sort": sort,
-                      "hot_orgs": hot_orgs,
+                       "sort": sort,
+                       "hot_orgs": hot_orgs,
 
                        })
+
+
 class CourseDetailView(View):
-    def get(self, request, course_id , *args, **kwargs):
+    def get(self, request, course_id, *args, **kwargs):
         """
         获取课程详情页
         :param request:
@@ -70,5 +74,18 @@ class CourseDetailView(View):
                       {"course": course,
                        "has_fav_course": has_fav_course,
                        "has_fav_org": has_fav_org
-                      })
+                       })
 
+
+class CourseLessonView(View):
+    """"
+    章节信息
+    """
+
+    def get(self, request, course_id, *args, **kwargs):
+        course = Course.objects.get(id=int(course_id))
+        course.click_nums += 1
+        course.save()
+        return render(request, 'course-video.html',
+                      {"course": course,
+                       })

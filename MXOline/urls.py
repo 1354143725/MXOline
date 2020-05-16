@@ -26,5 +26,7 @@ urlpatterns = [
     url(r'^org/', include(('apps.organization.urls', 'organization'), namespace='org')),
     # 课程相关页面
     url(r'^course/', include(('apps.courses.urls', 'courses'), namespace='course')),
+    # 用户操作相关
+    url(r'^op/', include(('apps.operations.urls', 'operations'), namespace='op')),
 
 ]
