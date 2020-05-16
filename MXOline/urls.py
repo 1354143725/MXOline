@@ -4,7 +4,7 @@ from django.urls import path
 import xadmin
 # from apps.users import views
 from django.views.generic import TemplateView
-from apps.users.views import LoginView
+from apps.users.views import LoginView,LogoutView
 # from apps.courses.views import CourseView
 # from apps.organization.views import OrgView
 from django.conf.urls import url,include
@@ -17,6 +17,7 @@ urlpatterns = [
     # 第一种定义路由的方式
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
     path('login/', LoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
     # 配置授课机构列表展示
     # path('orglist/', OrgView.as_view(), name='orglist'),
     # 配置上传文件的访问的url
