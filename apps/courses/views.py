@@ -70,10 +70,32 @@ class CourseDetailView(View):
             if UserFavorite.objects.filter(user=request.user, fav_id=course.id, fav_type=2):
                 has_fav_org = True
 
+
+            # 课程推荐
+            # 通过课程的单标签进行课程推荐
+
+            # tag = course.tag
+            # related_courses = []
+            # if tag:
+            #     related_courses = Course.objects.filter(tag=tag).exclude(id__in=[course.id])[:3]
+            #     print(related_courses)
+            
+
+            # 通过 CourseTag类进行课程推荐
+            tags = course.coursetag_set.all()
+            # 遍历
+            tag_list = [tag.tag for tag in tags]
+            course_tags = CourseTag.objects.filter(tag__in=tag_list).exclude(course__id=course.id)
+            related_courses = set()
+            for course_tag in course_tags:
+                related_courses.add(course_tag.course)
+
+
         return render(request, 'course-detail.html',
                       {"course": course,
                        "has_fav_course": has_fav_course,
-                       "has_fav_org": has_fav_org
+                       "has_fav_org": has_fav_org,
+                       "related_courses": related_courses
                        })
 
 
