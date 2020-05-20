@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic import View
 from apps.courses.models import *
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
-from apps.operations.models import UserFavorite, UserCourse
+from apps.operations.models import *
 from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.courses.models import CourseResource
 # Create your views here.
@@ -79,7 +79,7 @@ class CourseDetailView(View):
             # if tag:
             #     related_courses = Course.objects.filter(tag=tag).exclude(id__in=[course.id])[:3]
             #     print(related_courses)
-            
+
 
             # 通过 CourseTag类进行课程推荐
             tags = course.coursetag_set.all()
@@ -100,9 +100,6 @@ class CourseDetailView(View):
 
 
 class CourseLessonView(LoginRequiredMixin,View):
-    """"
-    章节信息
-    """
     login_url = '/login/'
     def get(self, request, course_id, *args, **kwargs):
         course = Course.objects.get(id=int(course_id))
@@ -127,3 +124,45 @@ class CourseLessonView(LoginRequiredMixin,View):
                        "course_resource":course_resource,
                        "related_courses": related_courses,
                        })
+
+
+class CourseCommentsView(LoginRequiredMixin, View):
+    """"
+    评论
+    """
+    login_url = '/login/'
+    def get(self, request, course_id, *args, **kwargs):
+        course = Course.objects.get(id=int(course_id))
+        # 点击到课程 的详情就记录一次点击数
+        course.click_nums += 1
+        course.save()
+        # 该课的同学还学过
+        # 查询当前用户都学了那些课
+        user_courses = UserCourse.objects.filter(course=course)
+        user_ids = [user_course.user.id for user_course in user_courses]
+        # 查询这个用户关联的所有课程
+        all_courses = UserCourse.objects.filter(user_id__in=user_ids).order_by("-course__click_nums")[:5]
+        # 过滤掉当前课程
+        related_courses = []
+        for item in all_courses:
+            if item.course.id != course.id:
+                related_courses.append(item.course)
+
+        # 查询资料信息
+        course_resource = CourseResource.objects.filter(course=course)
+        # 用户评论
+        comments = CourseComments.objects.filter(course=course)
+        return render(request, 'course-comment.html',
+                      {"course": course,
+                       "course_resource":course_resource,
+                       "related_courses": related_courses,
+                       "comments": comments,
+                       })
+
+class VideoView(LoginRequiredMixin, View):
+    """
+    视频播放页面
+    """
+    login_url = '/login/'
+    def get(self, request, course_id, video_id, *args, **kwargs):
+        return render(request,'course-play.html')
