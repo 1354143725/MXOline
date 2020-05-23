@@ -10,12 +10,15 @@ from apps.users.views import LoginView,LogoutView
 from django.conf.urls import url,include
 from django.views.static import serve
 from MXOline.settings import MEDIA_ROOT
+from apps.operations.views import *
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('xadmin/', xadmin.site.urls),
     # path('', views.index),
     # 第一种定义路由的方式
-    path('', TemplateView.as_view(template_name='index.html'), name='index'),
+    # path('', TemplateView.as_view(template_name='index.html'), name='index'),
+    path('',IndexView.as_view(), name='index'),
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     # 配置授课机构列表展示
@@ -29,5 +32,6 @@ urlpatterns = [
     url(r'^course/', include(('apps.courses.urls', 'courses'), namespace='course')),
     # 用户操作相关
     url(r'^op/', include(('apps.operations.urls', 'operations'), namespace='op')),
+    url(r'^users/', include(('apps.users.urls', 'users'), namespace='users')),
 
 ]

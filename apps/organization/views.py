@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import View
 from apps.organization.models import CourseOrg, City, Teacher
+from apps.courses.models import *
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 from apps.organization.form import AddAskForm
 from django.http import JsonResponse
@@ -67,3 +68,37 @@ class AddAsk(View):
                 "status": "fail",
                 "msg": "添加出错"
             })
+class TeacherListView(View):
+    def get(self, request, *args, **kwargs):
+        all_teachers = Teacher.objects.all()
+        hot_teachers = Teacher.objects.all().order_by("-click_nums")[:3]
+        sort = request.GET.get('sort', "")
+        if sort == 'hot':
+            all_teachers = all_teachers.order_by('-fav_nums')
+
+
+        # 讲师分页
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+        p = Paginator(all_teachers,per_page=5, request=request) # 每页显示多少个
+        teachers = p.page(page)
+        teacher_nums = all_teachers.count()
+
+        return render(request,'teachers-list.html',{
+            "teachers": teachers,
+            "teacher_nums": teacher_nums,
+            "hot_teachers": hot_teachers,
+
+        })
+class TeacherDeatailView(View):
+    def get(self, request, teacher_id,*args, **kwargs):
+        teacher = Teacher.objects.get(id=int(teacher_id))
+        hot_teachers = Teacher.objects.all().order_by("-click_nums")[:3]
+        courses = teacher.course_set.all()
+        return render(request, 'teacher-detail.html', {
+            "teacher": teacher,
+            "hot_teachers": hot_teachers,
+            "courses": courses,
+        })
